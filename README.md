@@ -79,3 +79,104 @@ The dataset is saved locally as `data/energydata_complete.csv`.
 
 The repository contains the download script and data source instructions so that the original measurements can be obtained again.
 
+## Mathematical Analysis Using Python
+
+I performed two analyses using Python to investigate whether Newton's Law of Cooling can predict short-term changes in living room temperature.
+
+The dataset contains 19,735 observations collected between 11 January and 27 May 2016. I used 15,787 consecutive temperature pairs for training and 3,947 pairs for testing.
+
+### Analysis 1: Temperature Difference and Temperature Change
+
+In the first analysis, I examined the relationship between the indoor–outdoor temperature difference and the actual change in living room temperature over a 10-minute interval.
+
+I calculated:
+
+1. The difference between outdoor and indoor temperature.
+2. The observed change in living room temperature between consecutive measurements.
+3. The temperature adjustment coefficient using the mathematical model.
+
+Newton's Law of Cooling is expressed as:
+
+**dT/dt = k(T_outside - T_inside)**
+
+Where:
+- **T** is the indoor temperature.
+- **T_outside** is the outdoor temperature.
+- **k** is the temperature adjustment coefficient.
+- **t** represents time.
+
+The estimated coefficient was:
+
+**k = 0.00082944 per hour**
+
+The correlation between temperature difference and observed temperature change was:
+
+**Correlation = 0.05044**
+
+This indicates a very weak positive relationship between the variables. It suggests that the outdoor temperature difference alone does not explain much of the short-term variation in living room temperature.
+
+### Analysis 2: Predicting Living Room Temperature
+
+In the second analysis, I used Newton's Law of Cooling to predict the living room temperature 10 minutes later.
+
+I applied Euler's approximation:
+
+**T_next = T_now + k × (1/6) × (T_outside - T_now)**
+
+The factor **1/6** represents 10 minutes expressed in hours.
+
+I estimated the model coefficient using the first 80% of consecutive observations and evaluated the predictions using the remaining 20%.
+
+I compared the predicted temperatures with the actual measurements using Mean Absolute Error (MAE).
+
+I also compared the mathematical model with a simple baseline model, which assumes that the living room temperature remains unchanged during the next 10 minutes.
+
+The results were:
+
+| Prediction Method | Mean Absolute Error (°C) |
+|---|---|
+| Newton's Law of Cooling model | 0.073627 |
+| No-change baseline model | 0.073689 |
+
+The Newton's Law model produced a slightly lower prediction error than the baseline model.
+
+However, the improvement was approximately **0.085%**, which is very small. Therefore, the model did not provide a substantial improvement in prediction accuracy.
+
+## Visualizations
+
+I generated three graphs using Python and Matplotlib to present the findings from my analyses.
+
+All three visualizations are available as both PNG and PDF files in the `figures` folder.
+
+### Figure 1: Measured Indoor and Outdoor Temperatures
+
+This graph shows how the living room temperature and the outdoor temperature changed during the first three days of recorded measurements.
+
+![Measured Indoor and Outdoor Temperatures](figures/01_measured_temperatures.png)
+
+[View Figure 1 as PDF](figures/01_measured_temperatures.pdf)
+
+### Figure 2: Actual vs. Predicted Indoor Temperature
+
+This graph compares the measured living room temperatures with the predictions from Newton's Law of Cooling and the no-change baseline.
+
+![Actual vs. Predicted Indoor Temperature](figures/02_actual_vs_predicted.png)
+
+[View Figure 2 as PDF](figures/02_actual_vs_predicted.pdf)
+
+### Figure 3: Temperature Difference vs. Temperature Change
+
+This graph illustrates the relationship between the indoor–outdoor temperature difference and the observed change in living room temperature over 10 minutes. It also shows the fitted mathematical relationship.
+
+![Temperature Difference vs. Temperature Change](figures/03_temperature_change_relation.png)
+
+[View Figure 3 as PDF](figures/03_temperature_change_relation.pdf)
+
+## Preliminary Findings
+
+The analyses indicate that the relationship between outdoor–indoor temperature difference and short-term living room temperature change is very weak.
+
+Although Newton's Law of Cooling produced slightly more accurate predictions than the no-change baseline, the improvement was extremely small.
+
+This suggests that factors other than outdoor temperature may also influence indoor temperature changes.
+
