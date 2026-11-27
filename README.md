@@ -172,11 +172,82 @@ This graph illustrates the relationship between the indoor–outdoor temperature
 
 [View Figure 3 as PDF](figures/03_temperature_change_relation.pdf)
 
-## Preliminary Findings
+## Results and Interpretation
 
-The analyses indicate that the relationship between outdoor–indoor temperature difference and short-term living room temperature change is very weak.
+The aim of this project was to investigate whether Newton's Law of Cooling can accurately predict short-term changes in living room temperature using outdoor temperature measurements.
 
-Although Newton's Law of Cooling produced slightly more accurate predictions than the no-change baseline, the improvement was extremely small.
+The analysis was conducted using 19,735 observations from the UCI Appliances Energy Prediction Dataset.
 
-This suggests that factors other than outdoor temperature may also influence indoor temperature changes.
+### Results of Analysis 1: Temperature Difference and Temperature Change
+
+The first analysis examined the relationship between the difference in outdoor and indoor temperatures and the observed change in living room temperature over 10 minutes.
+
+The estimated temperature adjustment coefficient was:
+
+**k = 0.00082944 per hour**
+
+The calculated correlation coefficient was:
+
+**Correlation = 0.05044**
+
+This indicates a very weak positive relationship between the temperature difference and the observed indoor temperature change.
+
+According to Newton's Law of Cooling, a larger temperature difference should influence the rate of temperature change. However, the low correlation suggests that the outdoor temperature difference alone does not explain much of the short-term variation in living room temperature.
+
+### Results of Analysis 2: Prediction Accuracy
+
+The second analysis evaluated how accurately Newton's Law of Cooling could predict the living room temperature 10 minutes later.
+
+The model was tested using 3,947 temperature pairs that were not used to estimate the cooling coefficient.
+
+The accuracy was evaluated using Mean Absolute Error (MAE).
+
+| Prediction Method | Mean Absolute Error (°C) |
+|---|---|
+| Newton's Law of Cooling | 0.073627 |
+| No-change baseline | 0.073689 |
+
+The differential-equation model achieved a slightly lower prediction error than the no-change baseline.
+
+However, the difference was only approximately **0.000062°C**, which represents an improvement of about **0.085%**.
+
+Although the model performed slightly better, the improvement was extremely small.
+
+This suggests that Newton's Law of Cooling, when applied using only the outdoor temperature, provides limited additional predictive value over a short 10-minute interval.
+
+### Limitations
+
+The mathematical model is simplified because it considers only the difference between indoor and outdoor temperatures.
+
+In reality, indoor temperature may be affected by additional factors, including:
+
+- Heating systems
+- Sunlight
+- Ventilation
+- Occupancy and indoor activities
+- Thermal properties of the building
+
+The model does not explicitly account for these factors.
+
+Additionally, indoor temperatures usually change very little over a short period of 10 minutes, making it difficult for the model to outperform a simple no-change prediction.
+
+### Conclusion
+
+The results demonstrate that Newton's Law of Cooling can be applied to real building sensor data to predict short-term living room temperature changes.
+
+However, the observed relationship between indoor–outdoor temperature difference and indoor temperature change was very weak.
+
+The model achieved a mean absolute error of approximately 0.073627°C, only slightly lower than the no-change baseline error of 0.073689°C.
+
+Therefore, the simple differential-equation model did not provide a substantial improvement in prediction accuracy.
+
+Overall, the project demonstrates how first-order differential equations can be applied to real-world data and how Python can be used to evaluate a mathematical model and understand its limitations.
+
+## Project Website
+
+I developed an HTML website to present the research question, dataset, mathematical model, analyses, visualizations, and conclusions.
+
+The website was generated using Python and the results from the analysis.
+
+The website URL will be added after publication through GitHub Pages.
 
