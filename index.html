@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Living Room Temperature | Advanced Mathematics</title>
+<style>
+:root{--bg:#f8fafc;--ink:#18283a;--muted:#58697a;--accent:#146d79;--line:#dce4eb}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+header{padding:72px 20px 50px;background:#12333d;color:white}header .inner,main,footer{max-width:980px;margin:auto}
+header p{color:#c3d5d6}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.12;max-width:850px;margin:10px 0 20px}
+h2{font-size:1.7rem;margin-top:45px}.eyebrow{color:#9bd8d7;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
+main{padding:22px 20px 64px}nav{display:flex;gap:15px;flex-wrap:wrap;padding:16px 20px;background:white;border-bottom:1px solid var(--line);justify-content:center}
+nav a,a{color:var(--accent)}nav a{text-decoration:none;font-weight:650}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:22px 0}
+.card,.plot{background:white;border:1px solid var(--line);border-radius:13px;padding:18px}.metric{font-size:1.85rem;font-weight:750;line-height:1.2}.muted,small{color:var(--muted)}
+.plot{margin:22px 0;padding:12px}.plot img{width:100%;height:auto;display:block}.plot h3{padding:0 10px}
+.equation{text-align:center;background:#e5f1f1;padding:15px;border-radius:9px;font-size:1.35rem;overflow:auto}
+.note{border-left:4px solid var(--accent);padding:10px 18px;background:#eaf4f4;border-radius:6px}
+footer{padding:25px 20px 45px;color:var(--muted);border-top:1px solid var(--line)}
+</style></head><body>
+<header><div class="inner"><div class="eyebrow">Project Advanced Math</div>
+<h1>Can Newton's Law of Cooling Predict Short-Term Living Room Temperatures?</h1>
+<p>Using published Belgian building sensor observations to test a simple differential equation.</p>
+<p><strong>Student:</strong> Talib Hossain <strong>ID:</strong> 0661088 </p></div></header>
+<nav><a href="#question">Question</a><a href="#data">Data</a><a href="#model">Mathematics</a><a href="#results">Results</a><a href="#conclusion">Conclusion</a></nav>
+<main><section id="question"><h2>1. Research question</h2><p>Can a first-order differential equation based on the difference between indoor and outdoor temperatures predict the living-room temperature ten minutes later?</p></section>
+<section id="data"><h2>2. Dataset</h2><p>The <a href="https://archive.ics.uci.edu/dataset/374/appliances%2Benergy%2Bprediction">UCI Appliances Energy Prediction dataset</a> contains sensor observations from a Belgian home. This project uses date, living room temperature (T2), and north-side outside temperature (T6). Data are ordinarily recorded at 10-minute intervals; we only analyze consecutive pairs that are exactly 10 minutes apart.</p>
+<div class="cards"><div class="card"><div class="metric">19,735</div><small>Original rows</small></div><div class="card"><div class="metric">19,734</div><small>Valid 10-minute pairs</small></div><div class="card"><div class="metric">15,787 / 3,947</div><small>Training / test pairs (time ordered)</small></div></div>
+<p><small>Observed period: 2016-01-11 17:00:00 to 2016-05-27 18:00:00.</small></p></section>
+<section id="model"><h2>3. Mathematical model</h2><p>Newton's Law of Cooling relates the speed of indoor temperature change to the difference between outdoor and indoor temperatures:</p>
+<div class="equation">dT/dt = k (T<sub>outside</sub> − T<sub>inside</sub>)</div>
+<p>For a ten-minute step (1/6 hour), Euler's approximation becomes:</p>
+<div class="equation">T<sub>next</sub> = T<sub>now</sub> + k × (1/6) × (T<sub>outside</sub> − T<sub>now</sub>)</div>
+<p>The coefficient <strong>k</strong> is estimated from the first 80% of time-ordered temperature changes, then tested on the final 20%. A non-negative k is required by the simple cooling model.</p></section>
+<section id="results"><h2>4. Results and visualizations</h2><div class="cards"><div class="card"><div class="metric">0.00083</div><small>Fitted k (per hour)</small></div><div class="card"><div class="metric">0.0736 °C</div><small>ODE prediction MAE</small></div><div class="card"><div class="metric">0.0737 °C</div><small>No-change baseline MAE</small></div></div>
+<p>The estimated cooling-rate coefficient is 0.00083 per hour. This is an empirical coefficient estimated from observed 10-minute changes, not a known physical constant. The ODE achieved a lower error than the no-change baseline.</p>
+<div class="plot"><h3>Figure 1. Measured temperatures</h3><img src="figures/01_measured_temperatures.png" alt="Recorded living room and outside temperatures over three days"><p class="muted">Illustrates the measured variation in indoor and outdoor conditions over the first three days.</p></div>
+<div class="plot"><h3>Figure 2. Actual vs. model predictions</h3><img src="figures/02_actual_vs_predicted.png" alt="Actual and predicted next-step living room temperatures"><p class="muted">Shows 100 successive observations from the held-out test period. Also includes a no-change baseline.</p></div>
+<div class="plot"><h3>Figure 3. ODE relationship</h3><img src="figures/03_temperature_change_relation.png" alt="Indoor temperature changes versus indoor-outdoor temperature differences"><p class="muted">Relates a 10-minute indoor change to the instantaneous indoor–outdoor difference and shows the fitted ODE slope.</p></div>
+</section><section id="conclusion"><h2>5. Interpretation and limitations</h2>
+<p>The measured indoor temperatures depend on more than the outside temperature. Heating, occupants, ventilation, sunlight, and thermal storage are not explicitly included in this model. A low error alone does not prove that Newton's Law provides a complete explanation, particularly when indoor temperatures change slowly.</p>
+<p><strong>Test conclusion:</strong> The ODE model achieved a slightly lower mean absolute error (MAE) than the no-change baseline, indicating a marginal improvement in predicting living room temperature over 10-minute intervals. However, the improvement was very small (approximately 0.085%), suggesting that the indoor–outdoor temperature difference alone has limited predictive value. Other factors, such as heating, occupancy, and thermal properties of the building, may also influence indoor temperature changes. Despite these limitations, the first-order model provides a useful starting point for understanding how differential equations can be applied to real-world temperature data.</p>
+<p class="note">All reported numerical results and figures on this page were generated by <code>analysis.py</code> from the downloaded UCI dataset. No measurements were invented.</p>
+<p><strong>Reference:</strong> Candanedo, Feldheim &amp; Deramaix (2017), <em>Data driven prediction models of energy use of appliances in a low-energy house</em>. Dataset hosted by UCI Machine Learning Repository.</p>
+</section></main><footer>Project Advanced Math · Source dataset: UCI Appliances Energy Prediction · Student: Talib Hossain ID: 0661088 </footer></body></html>
